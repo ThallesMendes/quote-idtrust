@@ -2,10 +2,14 @@ package br.com.idtrust.pricequote.common.exception;
 
 import static java.text.MessageFormat.format;
 
+import lombok.Getter;
+
 public class ServiceException extends RuntimeException {
   private static final long serialVersionUID = -9094847967693874662L;
 
   private final String serviceName;
+
+  @Getter
   private final String errorBody;
 
   public ServiceException(final String serviceName,
@@ -20,4 +24,5 @@ public class ServiceException extends RuntimeException {
                           final String errorBody) {
     this(serviceName, errorBody, null);
   }
+
 }

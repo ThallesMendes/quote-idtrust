@@ -73,4 +73,16 @@ class QuandlServiceTest extends BaseServiceTest {
     );
 
   }
+
+  @Test
+  @DisplayName("should be get quote value error when code not found")
+  void shouldBeGetQuoteValueErrorWhenCodeNotFound() {
+
+    this.quandlService.setClient(client(HttpStatus.NOT_FOUND.value(), "Not Found", QuandlResponseSeeder.error("QECx02"), false));
+
+    assertThrows(EntityNotFoundException.class, () ->
+        this.quandlService.getQuoteValue("CULT", LocalDate.now(), LocalDate.now())
+    );
+
+  }
 }

@@ -1,5 +1,7 @@
 package br.com.idtrust.pricequote.service.quandl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Component;
 public class QuandlService extends BaseService<Quandl> {
 
   private static final String SERVICE_NAME = "Quandl";
+  private static final String ERROR_CODE_NOTFOUND = "QECx02";
 
   private final String host;
   private final String key;
@@ -37,7 +40,16 @@ public class QuandlService extends BaseService<Quandl> {
                                            @NonNull final LocalDate endDate) {
 
     final var request = this.getApi().getQuote(culture, startDate, endDate, this.key);
-    return this.executeAndVerifyStatusCode(request, HttpStatus.OK);
+
+    try {
+      return this.executeAndVerifyStatusCode(request, HttpStatus.OK);
+    } catch (ServiceException ex) {
+      if (this.isCodeNotFound(ex)) {
+        throw new EntityNotFoundException("Quandl Code");
+      }
+
+      throw ex;
+    }
   }
 
   @Retryable(value = ServiceException.class,
@@ -56,6 +68,19 @@ public class QuandlService extends BaseService<Quandl> {
         .filter(q -> q instanceof Double)
         .map(q -> (Double)q)
         .orElseThrow(() -> new EntityNotFoundException("Quote Value"));
+  }
+
+  private boolean isCodeNotFound(final ServiceException serviceException) {
+    try {
+      final var body = new ObjectMapper()
+          .findAndRegisterModules()
+          .readValue(serviceException.getErrorBody(), QuandlErrorResponse.class);
+
+      return body.getQuandlError().getCode().equals(ERROR_CODE_NOTFOUND);
+
+    } catch (Exception ex) {
+      return false;
+    }
   }
 
   @Override

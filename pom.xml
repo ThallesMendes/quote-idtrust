@@ -20,6 +20,7 @@
 		<io.jsonwebtoken.version>0.9.1</io.jsonwebtoken.version>
 		<retrofit2.version>2.9.0</retrofit2.version>
 		<logstash-logback-encoder-version>4.11</logstash-logback-encoder-version>
+		<hibernate.validator.version>6.0.10.Final</hibernate.validator.version>
 	</properties>
 
 	<dependencies>
@@ -92,6 +93,11 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aspects</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate.validator</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>${hibernate.validator.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

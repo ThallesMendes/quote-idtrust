@@ -2,6 +2,8 @@ package br.com.idtrust.pricequote.config;
 
 import static java.text.MessageFormat.format;
 
+import javax.validation.ConstraintViolationException;
+
 import br.com.idtrust.pricequote.common.exception.EntityNotFoundException;
 import br.com.idtrust.pricequote.common.exception.ServiceException;
 import br.com.idtrust.pricequote.common.response.ResponseError;
@@ -33,6 +35,17 @@ public class RestControllerAdvice {
   @ResponseBody
   public ResponseError entityNotFound(final EntityNotFoundException ex) {
 
+    log.error(ex.getMessage(), ex);
+
+    return ResponseError.builder()
+        .message(ex.getMessage())
+        .build();
+  }
+
+  @ExceptionHandler({ConstraintViolationException.class})
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ResponseBody
+  public ResponseError constraintViolationException(final ConstraintViolationException ex) {
     log.error(ex.getMessage(), ex);
 
     return ResponseError.builder()

@@ -30,7 +30,7 @@ Cotação de culturas agrícolas negociadas na BM&F (Bolsa de Mercadorias e Futu
 ### Inicie container do banco de dados seguido do comando maven
 
 ```sh
-docker-compose up db -d
+docker-compose up -d db
 ```
 
 ```sh
