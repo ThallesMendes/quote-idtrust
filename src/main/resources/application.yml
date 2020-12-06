@@ -1,0 +1,44 @@
+application:
+  env: ${ENV:staging}
+  name: '@pom.name@'
+  description: '@pom.description@'
+  version: '@pom.version@'
+
+server.port: ${PORT:8080}
+
+jwt:
+  secretKey: ${JWT_SECRET_KEY:stubJwt}
+
+spring:
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: ${DATASOURCE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    hikari:
+      minimumIdle: ${DATABASE_CONNECTION_MIN:10}
+      maximumPoolSize: ${DATABASE_CONNECTION_MAX:20}
+  jpa:
+    properties:
+      hibernate:
+        show_sql: false
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  flyway:
+    check-location: true
+    enabled: true
+    url: ${DATASOURCE_URL}
+    user: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+
+http:
+  quandl:
+    host: ${HTTP_QUANDL_HOST}
+    key: ${HTTP_QUANDL_KEY}
+    retry:
+      max-attempts: ${HTTP_QUANDL_RETRY_MAX_ATTEMPTS:3}
+      backoff-delay: ${HTTP_QUANDL_RETRY_BACKOFF_DELAY:2000}
+  awesome:
+    host: ${HTTP_AWESOME_HOST}
+    retry:
+      max-attempts: ${HTTP_AWESOME_RETRY_MAX_ATTEMPTS:3}
+      backoff-delay: ${HTTP_AWESOME_RETRY_BACKOFF_DELAY:2000}

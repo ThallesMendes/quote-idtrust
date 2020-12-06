@@ -1,0 +1,44 @@
+application:
+  env: test
+  name: '@pom.name@'
+  description: '@pom.description@'
+  version: '@pom.version@'
+
+server.port: 9999
+
+jwt:
+  secretKey: stubJwt
+
+spring:
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5433/quote
+    username: quote
+    password: quote
+    hikari:
+      minimumIdle: 10
+      maximumPoolSize: 20
+  jpa:
+    properties:
+      hibernate:
+        show_sql: false
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  flyway:
+    check-location: true
+    enabled: true
+    url: jdbc:postgresql://localhost:5433/quote
+    user: quote
+    password: quote
+
+http:
+  quandl:
+    host: http://localhost
+    key:
+    retry:
+      max-attempts: 3
+      backoff-delay: 2000
+  awesome:
+    host: http://localhost
+    retry:
+      max-attempts: 3
+      backoff-delay: 2000
